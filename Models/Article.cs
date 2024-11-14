@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System;
 using System.Collections.Generic;
 
 namespace NewsAPI.Models;
@@ -12,10 +13,10 @@ public partial class Article : DBEntry
     public string? Content { get; set; }
 
     public DateTime PostTime { get; set; }
-
-    public User AuthorUser { get; set; } = null!;
-
+    [ValidateNever]
+    public User? AuthorUser { get; set; }
+    [ValidateNever]
     public ICollection<Comment>? Comments { get; set; }
-
+    [ValidateNever]
     public ICollection<Tag>? Tags { get; set; }
 }

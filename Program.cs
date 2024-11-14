@@ -16,7 +16,7 @@ namespace NewsAPI
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             //var options = optionsBuilder.UseMySql(connectionString, new MySqlServerVersion(new Version(9, 0, 0))).LogTo(Console.WriteLine, LogLevel.Debug).Options;
 
-            builder.Services.AddDbContext<NewsdbContext>(opt =>
+            builder.Services.AddDbContext<NewsDBContext>(opt =>
                 opt.UseMySql("server=localhost;port=3306;database=newsdb;uid=dbmaster;password=debil",
                 new MySqlServerVersion(new Version(9, 0, 0))).LogTo(Console.WriteLine, LogLevel.Debug)
                     //TODO: Remove on deploy
@@ -25,10 +25,10 @@ namespace NewsAPI
                     .EnableSensitiveDataLogging());
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            //builder.Services.AddControllers().AddNewtonsoftJson(options =>
-            //{
-
-            //});
+            builder.Services.AddControllers().AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            });
             builder.Services.AddSwaggerGen();
             var app = builder.Build();
             app.MapControllers();

@@ -5,14 +5,14 @@ using NewsAPI.Models;
 namespace NewsAPI.Controllers
 {
     [ApiController]
-    [Route("[controller]/[action]")]
+    [Route("api/[controller]/[action]")]
     public abstract class MyController<T> : ControllerBase where T : DBEntry
     {
-        protected readonly NewsdbContext _context;
-        private readonly Func<NewsdbContext, DbSet<T>> _getDBset;
+        protected readonly NewsDBContext _context;
+        private readonly Func<NewsDBContext, DbSet<T>> _getDBset;
         protected DbSet<T> _dbset => _getDBset(_context);
 
-        public MyController(NewsdbContext context, Func<NewsdbContext, DbSet<T>> getDBset)
+        public MyController(NewsDBContext context, Func<NewsDBContext, DbSet<T>> getDBset)
         {
             _context = context;
             _getDBset = getDBset;
@@ -43,8 +43,6 @@ namespace NewsAPI.Controllers
             {
                 return Conflict();
             }
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
             var created = await _context.AddAsync(entity);
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(GetById), new { id = entity.Id }, entity);

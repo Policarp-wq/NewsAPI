@@ -6,7 +6,7 @@ namespace NewsAPI.Controllers
 {
     public class UserController : MyController<User>
     {
-        public UserController(NewsdbContext context) : base(context, (context) => context.Users)
+        public UserController(NewsDBContext context) : base(context, (context) => context.Users)
         {
         }
         //Возвращать надо .Entity!!!
