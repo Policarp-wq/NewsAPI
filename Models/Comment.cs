@@ -3,10 +3,8 @@ using System.Collections.Generic;
 
 namespace NewsAPI.Models;
 
-public partial class Comment
+public partial class Comment : DBEntry
 {
-    public int Id { get; set; }
-
     public int AuthorId { get; set; }
 
     public int ArticleId { get; set; }

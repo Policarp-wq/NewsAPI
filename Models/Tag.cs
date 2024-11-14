@@ -3,11 +3,9 @@ using System.Collections.Generic;
 
 namespace NewsAPI.Models;
 
-public partial class Tag
+public partial class Tag : DBEntry
 {
-    public int Id { get; set; }
-
     public string Name { get; set; } = null!;
 
-    public virtual ICollection<Article> Articles { get; set; } = new List<Article>();
+    public virtual ICollection<Article>? Articles { get; set; }
 }

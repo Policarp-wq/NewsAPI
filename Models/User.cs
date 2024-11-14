@@ -3,10 +3,8 @@ using System.Collections.Generic;
 
 namespace NewsAPI.Models;
 
-public partial class User
+public partial class User : DBEntry
 {
-    public int Id { get; set; }
-
     public string Fullname { get; set; } = null!;
 
     public string PasswordHash { get; set; } = null!;
