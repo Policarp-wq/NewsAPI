@@ -19,4 +19,5 @@ public partial class Article : DBEntry
     public ICollection<Comment>? Comments { get; set; }
     [ValidateNever]
     public ICollection<Tag>? Tags { get; set; }
+
 }

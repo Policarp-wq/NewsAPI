@@ -9,4 +9,5 @@ public partial class Tag : DBEntry
     public string Name { get; set; } = null!;
     [ValidateNever]
     public virtual ICollection<Article>? Articles { get; set; }
+
 }

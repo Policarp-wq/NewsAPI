@@ -1,19 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NewsAPI.Models;
+using StackExchange.Redis;
 
 namespace NewsAPI.Controllers
 {
     public class ArticleController : MyController<Article>
     {
-        public ArticleController(NewsDBContext context) : base(context, context => context.Articles)
-        
+        public ArticleController(NewsDBContext context, IConnectionMultiplexer muxer, ILogger<ArticleController> logger)
+            : base(context, muxer, logger, context => context.Articles, "article")
+
         {
         }
 
         [HttpGet]
         public async Task<IActionResult> GetArticlesWithUsers()
         {
+            _logger.LogDebug("Accessing articles with users");
             return new ObjectResult(await _dbset
                 .Include(art => art.AuthorUser)
                 .AsNoTracking()
@@ -22,6 +25,7 @@ namespace NewsAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetArticlesPreview()
         {
+            _logger.LogDebug("Accessing articles preview");
             return new ObjectResult(await _dbset
                 .Include(art => art.AuthorUser)
                 .Include(art => art.Tags)
@@ -40,6 +44,7 @@ namespace NewsAPI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetArticleFullPresentation(int id)
         {
+            _logger.LogDebug("Accessing article full presentation! Require big request to db");
             return new ObjectResult(await _dbset
                 .Include(art => art.AuthorUser)
                 .Include(art => art.Tags)
@@ -65,7 +70,7 @@ namespace NewsAPI.Controllers
                 .SingleAsync(art => art.Id == id));
         }
 
-            [HttpGet("{tagId}")]
+        [HttpGet("{tagId}")]
         public async Task<IActionResult> GetByTag(int tagId)
         {
             return new ObjectResult(await _dbset

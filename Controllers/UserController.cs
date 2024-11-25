@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NewsAPI.Models;
+using StackExchange.Redis;
 
 namespace NewsAPI.Controllers
 {
     public class UserController : MyController<User>
     {
-        public UserController(NewsDBContext context) : base(context, (context) => context.Users)
+        public UserController(NewsDBContext context, IConnectionMultiplexer muxer, ILogger<UserController> logger) :
+            base(context,muxer, logger, (context) => context.Users, "user")
         {
         }
         //Возвращать надо .Entity!!!
